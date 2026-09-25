@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { toast } from "sonner";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiGet, apiPatch, apiPost } from "@/lib/api-client";
+import { useAsync } from "@/lib/hooks";
 
 async function fetchProfile() {
   const { profile } = await apiGet("/api/profile");
@@ -14,8 +14,7 @@ async function fetchProfile() {
 }
 
 export default function Account() {
-  const qc = useQueryClient();
-  const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: fetchProfile });
+  const { data: profile, refresh } = useAsync(fetchProfile, []);
   const [busy, setBusy] = useState(false);
   const [pwBusy, setPwBusy] = useState(false);
 
@@ -30,7 +29,7 @@ export default function Account() {
         position: String(fd.get("position") ?? "").slice(0, 30),
       });
       toast.success("Profile saved");
-      qc.invalidateQueries({ queryKey: ["profile"] });
+      refresh();
     } catch {
       toast.error("Couldn't save");
     } finally {

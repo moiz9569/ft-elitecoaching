@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Lock, CreditCard, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { formatPrice, lessonCount } from "@/lib/data";
 import { apiGet, apiPost } from "@/lib/api-client";
 import { useAuth } from "@/components/AuthProvider";
+import { useAsync } from "@/lib/hooks";
 
 async function fetchPurchases() {
   const { purchases } = await apiGet("/api/purchases");
@@ -23,9 +23,9 @@ const fmtExp = (v) => { const d = v.replace(/\D/g, "").slice(0, 4); return d.len
 export default function CheckoutClient({ programme: p }) {
   const { user } = useAuth();
   const router = useRouter();
-  const qc = useQueryClient();
-  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
-  const owned = purchases?.some((x) => x.programme_slug === p.slug);
+  const { data: purchasesData } = useAsync(fetchPurchases, []);
+  const purchases = purchasesData ?? [];
+  const owned = purchases.some((x) => x.programme_slug === p.slug);
 
   const [card, setCard] = useState("4242 4242 4242 4242");
   const [exp, setExp] = useState("12/29");
@@ -43,7 +43,6 @@ export default function CheckoutClient({ programme: p }) {
     await new Promise((r) => setTimeout(r, 1400));
     try {
       const { ref } = await apiPost("/api/purchases", { programme_slug: p.slug });
-      await qc.invalidateQueries({ queryKey: ["purchases"] });
       router.push(`/checkout/success?programme=${p.slug}&ref=${ref}`);
     } catch (err) {
       toast.error(err.code === "DUPLICATE" ? "You already own this programme." : "Payment failed. Please try again.");

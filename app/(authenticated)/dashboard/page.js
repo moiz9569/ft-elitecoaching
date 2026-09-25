@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
 import { BookOpen, PlayCircle, CheckCircle2 } from "lucide-react";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { programmes, formatPrice, lessonCount } from "@/lib/data";
 import { apiGet } from "@/lib/api-client";
 import { useAuth } from "@/components/AuthProvider";
+import { useAsync } from "@/lib/hooks";
 
 async function fetchPurchases() {
   const { purchases } = await apiGet("/api/purchases");
@@ -16,7 +16,8 @@ async function fetchPurchases() {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { data: purchases = [], isLoading } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const { data: purchasesData, loading: isLoading } = useAsync(fetchPurchases, []);
+  const purchases = purchasesData ?? [];
 
   const ownedSlugs = new Set(purchases.map((p) => p.programme_slug));
   const totalLessons = purchases.reduce((n, p) => {

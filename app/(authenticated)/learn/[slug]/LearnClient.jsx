@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { CheckCircle2, Circle, Lock, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { PortalShell } from "@/components/portal/PortalShell";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { lessonCount, formatPrice } from "@/lib/data";
 import { apiGet, apiPatch } from "@/lib/api-client";
+import { useAsync } from "@/lib/hooks";
 
 async function fetchPurchases() {
   const { purchases } = await apiGet("/api/purchases");
@@ -16,9 +16,9 @@ async function fetchPurchases() {
 }
 
 export default function LearnClient({ programme: p }) {
-  const qc = useQueryClient();
-  const { data: purchases, isLoading } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
-  const purchase = purchases?.find((x) => x.programme_slug === p.slug);
+  const { data: purchasesData, loading: isLoading, refresh } = useAsync(fetchPurchases, []);
+  const purchases = purchasesData ?? [];
+  const purchase = purchases.find((x) => x.programme_slug === p.slug);
 
   const lessons = useMemo(
     () => p.curriculum.flatMap((w) => w.lessons.map((l) => ({ ...l, week: w.title }))),
@@ -56,11 +56,11 @@ export default function LearnClient({ programme: p }) {
     const next = isDone ? done.filter((d) => d !== lesson.id) : [...done, lesson.id];
     try {
       await apiPatch(`/api/purchases/${purchase.id}`, { completed_lessons: next });
-      await qc.invalidateQueries({ queryKey: ["purchases"] });
       if (!isDone) {
         toast.success("Lesson complete 💪");
         if (idx < lessons.length - 1) setActiveId(lessons[idx + 1].id);
       }
+      refresh();
     } catch {
       toast.error("Couldn't save progress");
     } finally {
