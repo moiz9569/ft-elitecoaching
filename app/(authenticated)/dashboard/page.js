@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BookOpen, PlayCircle, CheckCircle2 } from "lucide-react";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { Button } from "@/components/ui/button";
@@ -7,17 +8,21 @@ import { Progress } from "@/components/ui/progress";
 import { programmes, formatPrice, lessonCount } from "@/lib/data";
 import { apiGet } from "@/lib/api-client";
 import { useAuth } from "@/components/AuthProvider";
-import { useAsync } from "@/lib/hooks";
-
-async function fetchPurchases() {
-  const { purchases } = await apiGet("/api/purchases");
-  return purchases;
-}
+import { toast } from "sonner";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { data: purchasesData, loading: isLoading } = useAsync(fetchPurchases, []);
-  const purchases = purchasesData ?? [];
+  const [purchases, setPurchases] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    apiGet("/api/purchases")
+      .then(({ purchases }) => { if (!cancelled) setPurchases(purchases); })
+      .catch(() => { if (!cancelled) toast.error("Couldn't load your programmes"); })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
 
   const ownedSlugs = new Set(purchases.map((p) => p.programme_slug));
   const totalLessons = purchases.reduce((n, p) => {
@@ -109,4 +114,9 @@ export default function Dashboard() {
       </div>
     </PortalShell>
   );
+}
+
+function toastError(msg) {
+  // lazy import to avoid pulling sonner if not needed
+  import("sonner").then(({ toast }) => toast.error(msg));
 }

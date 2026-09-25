@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Lock, CreditCard, Check, Info } from "lucide-react";
@@ -10,12 +10,6 @@ import { Label } from "@/components/ui/label";
 import { formatPrice, lessonCount } from "@/lib/data";
 import { apiGet, apiPost } from "@/lib/api-client";
 import { useAuth } from "@/components/AuthProvider";
-import { useAsync } from "@/lib/hooks";
-
-async function fetchPurchases() {
-  const { purchases } = await apiGet("/api/purchases");
-  return purchases;
-}
 
 const fmtCard = (v) => v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
 const fmtExp = (v) => { const d = v.replace(/\D/g, "").slice(0, 4); return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d; };
@@ -23,15 +17,23 @@ const fmtExp = (v) => { const d = v.replace(/\D/g, "").slice(0, 4); return d.len
 export default function CheckoutClient({ programme: p }) {
   const { user } = useAuth();
   const router = useRouter();
-  const { data: purchasesData } = useAsync(fetchPurchases, []);
-  const purchases = purchasesData ?? [];
-  const owned = purchases.some((x) => x.programme_slug === p.slug);
-
+  const [owned, setOwned] = useState(false);
   const [card, setCard] = useState("4242 4242 4242 4242");
   const [exp, setExp] = useState("12/29");
   const [cvc, setCvc] = useState("123");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    apiGet("/api/purchases")
+      .then(({ purchases }) => {
+        if (cancelled) return;
+        setOwned(purchases.some((x) => x.programme_slug === p.slug));
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [p.slug]);
 
   const pay = async (e) => {
     e.preventDefault();

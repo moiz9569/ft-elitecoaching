@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CheckCircle2, Circle, Lock, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { PortalShell } from "@/components/portal/PortalShell";
@@ -8,16 +8,25 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { lessonCount, formatPrice } from "@/lib/data";
 import { apiGet, apiPatch } from "@/lib/api-client";
-import { useAsync } from "@/lib/hooks";
-
-async function fetchPurchases() {
-  const { purchases } = await apiGet("/api/purchases");
-  return purchases;
-}
 
 export default function LearnClient({ programme: p }) {
-  const { data: purchasesData, loading: isLoading, refresh } = useAsync(fetchPurchases, []);
-  const purchases = purchasesData ?? [];
+  const [purchases, setPurchases] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeId, setActiveId] = useState(null);
+  const [saving, setSaving] = useState(false);
+
+  const loadPurchases = () =>
+    apiGet("/api/purchases").then(({ purchases }) => setPurchases(purchases));
+
+  useEffect(() => {
+    let cancelled = false;
+    apiGet("/api/purchases")
+      .then(({ purchases }) => { if (!cancelled) setPurchases(purchases); })
+      .catch(() => { if (!cancelled) toast.error("Couldn't load your programmes"); })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
   const purchase = purchases.find((x) => x.programme_slug === p.slug);
 
   const lessons = useMemo(
@@ -26,8 +35,6 @@ export default function LearnClient({ programme: p }) {
   );
   const done = purchase?.completed_lessons ?? [];
   const firstIncomplete = lessons.find((l) => !done.includes(l.id))?.id ?? lessons[0].id;
-  const [activeId, setActiveId] = useState(null);
-  const [saving, setSaving] = useState(false);
   const currentId = activeId ?? firstIncomplete;
   const idx = lessons.findIndex((l) => l.id === currentId);
   const lesson = lessons[idx];
@@ -60,7 +67,7 @@ export default function LearnClient({ programme: p }) {
         toast.success("Lesson complete 💪");
         if (idx < lessons.length - 1) setActiveId(lessons[idx + 1].id);
       }
-      refresh();
+      await loadPurchases();
     } catch {
       toast.error("Couldn't save progress");
     } finally {

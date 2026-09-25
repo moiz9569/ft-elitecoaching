@@ -1,22 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiGet, apiPatch, apiPost } from "@/lib/api-client";
-import { useAsync } from "@/lib/hooks";
-
-async function fetchProfile() {
-  const { profile } = await apiGet("/api/profile");
-  return profile;
-}
 
 export default function Account() {
-  const { data: profile, refresh } = useAsync(fetchProfile, []);
+  const [profile, setProfile] = useState(null);
   const [busy, setBusy] = useState(false);
   const [pwBusy, setPwBusy] = useState(false);
+
+  const loadProfile = () => {
+    apiGet("/api/profile")
+      .then(({ profile }) => setProfile(profile))
+      .catch(() => toast.error("Couldn't load profile"));
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    apiGet("/api/profile")
+      .then(({ profile }) => { if (!cancelled) setProfile(profile); })
+      .catch(() => { if (!cancelled) toast.error("Couldn't load profile"); });
+    return () => { cancelled = true; };
+  }, []);
 
   const saveProfile = async (e) => {
     e.preventDefault();
@@ -29,7 +37,7 @@ export default function Account() {
         position: String(fd.get("position") ?? "").slice(0, 30),
       });
       toast.success("Profile saved");
-      refresh();
+      loadProfile();
     } catch {
       toast.error("Couldn't save");
     } finally {
