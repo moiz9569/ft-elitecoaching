@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <main>
       {/* HERO */}
-      <section className="relative -mt-16 flex min-h-[100svh] flex-col overflow-hidden">
+      <section className="relative -mt-16 flex min-h-[calc(100svh_+_4rem)] flex-col overflow-hidden">
         <Image
           src="/hero.jpg"
           alt="Footballer training under floodlights"
@@ -35,15 +35,15 @@ export default function Home() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/10" />
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-4 pb-12 pt-28 sm:px-6 sm:pb-16">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/30 md:bg-gradient-to-r md:via-background/80 md:to-background/10" />
+        <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 pb-12 pt-24 sm:px-6 sm:pb-16 md:pt-16">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm sm:tracking-[0.25em]">
             Football coaching · Digital programmes
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl leading-[0.95] sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem]">
+          <h1 className="mt-4 max-w-4xl text-4xl leading-[0.95] sm:text-5xl md:text-7xl lg:text-8xl xl:text-[9rem]">
             Train like<br />the <span className="text-primary">elite.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
+          <p className="mt-5 max-w-xl text-base text-muted-foreground sm:mt-6 sm:text-lg">
             Personal coaching and proven training programmes that turn hard work into match-day results.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -204,7 +204,6 @@ export default function Home() {
     </main>
   );
 }
-
 
 
 
