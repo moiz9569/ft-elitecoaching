@@ -1,0 +1,10 @@
+import { MongoClient } from "mongodb";
+const client = new MongoClient(process.env.MONGODB_URI);
+await client.connect();
+const db = client.db(process.env.MONGODB_DB || "ft_elite");
+await db.collection("users").createIndex({ email: 1 }, { unique: true });
+await db.collection("purchases").createIndex({ userId: 1, programmeSlug: 1 }, { unique: true });
+await db.collection("password_resets").createIndex({ token: 1 }, { unique: true });
+await db.collection("password_resets").createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+console.log("Indexes created.");
+await client.close();
