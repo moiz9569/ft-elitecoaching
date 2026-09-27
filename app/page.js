@@ -42,9 +42,9 @@ export default function Home() {
       {/* HERO */}
       <section className="relative -mt-16 flex min-h-[calc(100svh_+_4rem)] flex-col overflow-hidden">
         <Image
-          src="/hero.png"
+          // src="/hero.png"
           // src="/hero.jpg"
-          // src="/WhatsApp Image 2026-09-28 at 1.56.02 AM.jpeg"
+          src="/ChatGPT Image Sep 28, 2026, 02_17_27 AM.png"
           alt="Footballer training under floodlights"
           fill
           priority
