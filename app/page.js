@@ -6,8 +6,13 @@ import { programmes, services, formatPrice } from "@/lib/data";
 
 export const metadata = {
   title: "FT Elite Coaching — Football coaching & training programmes",
-  description: "Book 1-to-1 football coaching or train anywhere with FT Elite's digital programmes.",
-  openGraph: { title: "FT Elite Coaching", description: "Book 1-to-1 football coaching or train anywhere with digital programmes." },
+  description:
+    "Book 1-to-1 football coaching or train anywhere with FT Elite's digital programmes.",
+  openGraph: {
+    title: "FT Elite Coaching",
+    description:
+      "Book 1-to-1 football coaching or train anywhere with digital programmes.",
+  },
 };
 
 const stats = [
@@ -17,9 +22,18 @@ const stats = [
 ];
 
 const testimonials = [
-  { q: "My son's first touch is unrecognisable after 6 sessions. He got into his club's A team.", a: "Sarah, parent" },
-  { q: "The Speed & Agility programme is no joke. I'm winning races I used to lose.", a: "Jay, 16, winger" },
-  { q: "Match analysis showed me things my coach never mentioned. Game changer.", a: "Tom, 19, midfielder" },
+  {
+    q: "My son's first touch is unrecognisable after 6 sessions. He got into his club's A team.",
+    a: "Sarah, parent",
+  },
+  {
+    q: "The Speed & Agility programme is no joke. I'm winning races I used to lose.",
+    a: "Jay, 16, winger",
+  },
+  {
+    q: "Match analysis showed me things my coach never mentioned. Game changer.",
+    a: "Tom, 19, midfielder",
+  },
 ];
 
 export default function Home() {
@@ -35,22 +49,36 @@ export default function Home() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/30 md:bg-gradient-to-r md:via-background/80 md:to-background/10" />
+        <div className="absolute inset-0 bg-blue-900/15" />
         <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 pb-12 pt-24 sm:px-6 sm:pb-16 md:pt-16">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm sm:tracking-[0.25em]">
             Football coaching · Digital programmes
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl leading-[0.95] sm:text-5xl md:text-7xl lg:text-8xl xl:text-[9rem]">
-            Train like<br />the <span className="text-primary">elite.</span>
+          <h1 className="mt-4 text-[#F4F7FB] max-w-4xl text-4xl leading-[0.95] sm:text-5xl md:text-7xl lg:text-8xl xl:text-[9rem]">
+            Train like
+            <br />
+            the <span className="text-primary">elite.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base text-muted-foreground sm:mt-6 sm:text-lg">
-            Personal coaching and proven training programmes that turn hard work into match-day results.
+          <p className="mt-5 max-w-xl text-base text-gray-300 sm:mt-6 sm:text-lg">
+            Personal coaching and proven training programmes that turn hard work
+            into match-day results.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="h-12 px-6 text-sm font-bold uppercase tracking-wider sm:text-base">
-              <Link href="/coaching">Book coaching <ArrowRight /></Link>
+            <Button
+              asChild
+              size="lg"
+              className="h-12 px-6 text-sm font-bold uppercase tracking-wider sm:text-base"
+            >
+              <Link href="/coaching">
+                Book coaching <ArrowRight />
+              </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="h-12 px-6 text-sm font-bold uppercase tracking-wider sm:text-base">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-12 px-6 text-sm font-bold uppercase tracking-wider sm:text-base"
+            >
               <Link href="/programmes">Browse programmes</Link>
             </Button>
           </div>
@@ -62,8 +90,12 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl grid-cols-3 divide-x px-4 sm:px-6">
           {stats.map((s) => (
             <div key={s.l} className="px-1 py-6 text-center sm:py-8">
-              <div className="font-display text-3xl leading-none text-primary sm:text-4xl md:text-5xl lg:text-6xl">{s.n}</div>
-              <div className="mt-2 text-[10px] uppercase leading-tight tracking-wider text-muted-foreground sm:text-xs md:text-sm">{s.l}</div>
+              <div className="font-display text-3xl leading-none text-primary sm:text-4xl md:text-5xl lg:text-6xl">
+                {s.n}
+              </div>
+              <div className="mt-2 text-[10px] uppercase leading-tight tracking-wider text-muted-foreground sm:text-xs md:text-sm">
+                {s.l}
+              </div>
             </div>
           ))}
         </div>
@@ -71,12 +103,30 @@ export default function Home() {
 
       {/* PICK YOUR PATH */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">Two ways to train</p>
-        <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Pick your path</h2>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+          Two ways to train
+        </p>
+        <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+          Pick your path
+        </h2>
         <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2">
           {[
-            { img: "/coaching.jpg", t: "Personal coaching", d: "Book a 1-to-1, small group or match analysis session with the coach.", to: "/coaching", cta: "See sessions", from: `From ${services[1].price}` },
-            { img: "/programme.jpg", t: "Digital programmes", d: "Structured video programmes you can follow anywhere, at your pace.", to: "/programmes", cta: "See programmes", from: `From ${formatPrice(Math.min(...programmes.map((p) => p.pricePence)))}` },
+            {
+              img: "/coaching.jpg",
+              t: "Personal coaching",
+              d: "Book a 1-to-1, small group or match analysis session with the coach.",
+              to: "/coaching",
+              cta: "See sessions",
+              from: `From ${services[1].price}`,
+            },
+            {
+              img: "/programme.jpg",
+              t: "Digital programmes",
+              d: "Structured video programmes you can follow anywhere, at your pace.",
+              to: "/programmes",
+              cta: "See programmes",
+              from: `From ${formatPrice(Math.min(...programmes.map((p) => p.pricePence)))}`,
+            },
           ].map((c) => (
             <Link
               key={c.t}
@@ -90,13 +140,20 @@ export default function Home() {
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+              <div className="absolute inset-0 bg-blue-900/15" />
               <div className="relative p-6 sm:p-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-primary">{c.from}</span>
-                <h3 className="mt-2 text-3xl sm:text-4xl lg:text-5xl">{c.t}</h3>
-                <p className="mt-2 max-w-md text-sm text-muted-foreground sm:text-base">{c.d}</p>
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                  {c.from}
+                </span>
+                <h3 className="mt-2 text-3xl sm:text-4xl text-[#F4F7FB] lg:text-5xl">
+                  {c.t}
+                </h3>
+                <p className="mt-2 max-w-md text-sm text-gray-300 sm:text-base">
+                  {c.d}
+                </p>
                 <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary sm:text-base">
-                  {c.cta} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  {c.cta}{" "}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </div>
             </Link>
@@ -108,21 +165,45 @@ export default function Home() {
       <section className="pitch-lines border-y">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 md:grid-cols-2 md:gap-12 lg:py-24">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">How it works</p>
-            <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">From sign-up to match day</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+              How it works
+            </p>
+            <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+              From sign-up to match day
+            </h2>
           </div>
           <ol className="space-y-8">
             {[
-              ["01", "Choose", "Pick a coaching session or a digital programme that fits your goals."],
-              ["02", "Book or buy", "Pick a time that suits you, or unlock your programme instantly."],
-              ["03", "Train", "Work with the coach or follow your programme from your dashboard."],
-              ["04", "Perform", "Track progress, come back stronger and keep levelling up."],
+              [
+                "01",
+                "Choose",
+                "Pick a coaching session or a digital programme that fits your goals.",
+              ],
+              [
+                "02",
+                "Book or buy",
+                "Pick a time that suits you, or unlock your programme instantly.",
+              ],
+              [
+                "03",
+                "Train",
+                "Work with the coach or follow your programme from your dashboard.",
+              ],
+              [
+                "04",
+                "Perform",
+                "Track progress, come back stronger and keep levelling up.",
+              ],
             ].map(([n, t, d]) => (
               <li key={n} className="flex gap-4 sm:gap-6">
-                <span className="font-display text-3xl leading-none text-primary sm:text-4xl">{n}</span>
+                <span className="font-display text-3xl leading-none text-primary sm:text-4xl">
+                  {n}
+                </span>
                 <div className="min-w-0">
                   <h3 className="text-2xl sm:text-3xl">{t}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground sm:text-base">{d}</p>
+                  <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+                    {d}
+                  </p>
                 </div>
               </li>
             ))}
@@ -133,8 +214,13 @@ export default function Home() {
       {/* PROGRAMMES */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Programmes</h2>
-          <Link href="/programmes" className="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-primary md:inline lg:text-base">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+            Programmes
+          </h2>
+          <Link
+            href="/programmes"
+            className="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-primary md:inline lg:text-base"
+          >
             View all →
           </Link>
         </div>
@@ -149,18 +235,27 @@ export default function Home() {
                 <span>{p.weeks} weeks</span>
                 <span>{p.level}</span>
               </div>
-              <h3 className="mt-6 text-2xl sm:text-3xl lg:text-4xl">{p.name}</h3>
-              <p className="mt-2 text-sm text-muted-foreground sm:text-base">{p.tagline}</p>
+              <h3 className="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+                {p.name}
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                {p.tagline}
+              </p>
               <ul className="mb-8 mt-6 space-y-2 text-sm">
                 {p.outcomes.slice(0, 3).map((o) => (
                   <li key={o} className="flex gap-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />{o}
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {o}
                   </li>
                 ))}
               </ul>
               <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t pt-4">
-                <span className="font-display text-3xl sm:text-4xl">{formatPrice(p.pricePence)}</span>
-                <span className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline sm:text-base">Details →</span>
+                <span className="font-display text-3xl sm:text-4xl">
+                  {formatPrice(p.pricePence)}
+                </span>
+                <span className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline sm:text-base">
+                  Details →
+                </span>
               </div>
             </Link>
           ))}
@@ -170,12 +265,21 @@ export default function Home() {
       {/* TESTIMONIALS */}
       <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">What players say</h2>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+            What players say
+          </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((t) => (
-              <figure key={t.a} className="border-l-4 border-primary bg-background p-6">
-                <blockquote className="text-base sm:text-lg">&quot;{t.q}&quot;</blockquote>
-                <figcaption className="mt-4 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:text-sm">{t.a}</figcaption>
+              <figure
+                key={t.a}
+                className="border-l-4 border-primary bg-background p-6"
+              >
+                <blockquote className="text-base sm:text-lg">
+                  &quot;{t.q}&quot;
+                </blockquote>
+                <figcaption className="mt-4 text-xs font-bold uppercase tracking-wider text-muted-foreground sm:text-sm">
+                  {t.a}
+                </figcaption>
               </figure>
             ))}
           </div>
@@ -185,9 +289,16 @@ export default function Home() {
       {/* CTA */}
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 sm:px-6 sm:py-16 md:flex-row md:items-center">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Ready to level up?</h2>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+            Ready to level up?
+          </h2>
           <div className="flex w-full flex-wrap gap-3 md:w-auto">
-            <Button asChild size="lg" variant="secondary" className="h-12 px-6 text-sm font-bold uppercase sm:text-base">
+            <Button
+              asChild
+              size="lg"
+              variant="secondary"
+              className="h-12 px-6 text-sm font-bold uppercase sm:text-base"
+            >
               <Link href="/coaching">Book a session</Link>
             </Button>
             <Button
@@ -204,15 +315,6 @@ export default function Home() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
 
 // import Link from "next/link";
 // import { ArrowRight, Check } from "lucide-react";
