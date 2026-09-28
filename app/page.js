@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { programmes, services, formatPrice } from "@/lib/data";
+import { TestimonialsSection } from "@/components/site/Testimonials";
 
 export const metadata = {
   title: "FT Elite Coaching — Football coaching & training programmes",
@@ -21,37 +22,23 @@ const stats = [
   { n: "4.9★", l: "Average rating" },
 ];
 
-const testimonials = [
-  {
-    q: "My son's first touch is unrecognisable after 6 sessions. He got into his club's A team.",
-    a: "Sarah, parent",
-  },
-  {
-    q: "The Speed & Agility programme is no joke. I'm winning races I used to lose.",
-    a: "Jay, 16, winger",
-  },
-  {
-    q: "Match analysis showed me things my coach never mentioned. Game changer.",
-    a: "Tom, 19, midfielder",
-  },
-];
-
 export default function Home() {
   return (
     <main>
       {/* HERO */}
       <section className="relative -mt-16 flex min-h-[calc(100svh_+_4rem)] flex-col overflow-hidden">
         <Image
-          src="/hero.png"
+          // src="/hero.png"
           // src="/hero.jpg"
-          // src="/ChatGPT Image Sep 28, 2026, 02_17_27 AM.png"
+          // src="/WhatsApp Image 2026-09-28 at 1.56.02 AM.jpeg"
+          src="/ChatGPT Image Sep 28, 2026, 09_12_21 PM.png"
           alt="Footballer training under floodlights"
           fill
           priority
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-blue-900/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#00001A]/85 via-[#00001A]/35 to-[#00001A]/15" />
         <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 pb-12 pt-24 sm:px-6 sm:pb-16 md:pt-16">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm sm:tracking-[0.25em]">
             Football coaching · Digital programmes
@@ -61,7 +48,7 @@ export default function Home() {
             <br />
             the <span className="text-primary">elite.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base text-gray-300 sm:mt-6 sm:text-lg">
+          <p className="mt-5 max-w-xl text-base text-gray-300 sm:mt-6 sm:text-lg text-gray-100">
             Personal coaching and proven training programmes that turn hard work
             into match-day results.
           </p>
@@ -265,7 +252,13 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="border-t bg-card">
+      <TestimonialsSection
+        eyebrow="Reviews"
+        title="What players say"
+        limit={3}
+        backgroundImage="/ChatGPT Image Sep 28, 2026, 09_12_21 PM.png"
+      />
+      {/* <section className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
             What players say
@@ -286,7 +279,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="bg-primary text-primary-foreground">
