@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { apiPost } from "@/lib/api-client";
+import Image from "next/image";
 
 const links = [
   { to: "/coaching", label: "Coaching" },
@@ -20,9 +21,14 @@ export function Logo({ className = "", variant = "dark" }) {
   const textColor = variant === "light" ? "text-[#F4F7FB]" : "text-gray-600";
   return (
     <Link href="/" className={`flex min-w-0 items-center gap-2 ${className}`}>
-      <span className="grid h-8 w-8 shrink-0 place-items-center bg-primary font-display text-lg text-primary-foreground">
-        FT
-      </span>
+      <Image
+        src="/ft-elitecoaching-logo.png"
+        alt="FT Elite Coaching"
+        width={2048}
+        height={2048}
+        className="h-18 w-18 shrink-0 object-contain"
+        priority
+      />
       <span
         className={`truncate font-display text-xl tracking-wide transition-colors sm:text-2xl ${textColor}`}
       >
