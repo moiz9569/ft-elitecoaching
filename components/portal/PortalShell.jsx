@@ -8,8 +8,7 @@ import {
   User,
   LogOut,
   Home,
-  Library,
-  CalendarCheck,
+  Sparkles,
 } from "lucide-react";
 import { Logo } from "@/components/site/SiteHeader";
 import { apiPost } from "@/lib/api-client";
@@ -17,10 +16,10 @@ import { useAuth } from "@/components/AuthProvider";
 
 const nav = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { to: "/my-programmes", label: "My programmes", icon: BookOpen },
-  { to: "/bookings", label: "My bookings", icon: CalendarDays },
-  { to: "/programmes", label: "Browse programmes", icon: Library },
-  { to: "/coaching", label: "Book coaching", icon: CalendarCheck },
+  { to: "/my-programmes", label: "My purchases", icon: BookOpen },
+  { to: "/my-subscriptions", label: "My subscriptions", icon: Sparkles },
+  { to: "/programmes", label: "Browse packages", icon: BookOpen },
+  { to: "/coaching", label: "One-off services", icon: CalendarDays },
   { to: "/account", label: "Account", icon: User },
 ];
 

@@ -1,41 +1,38 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
-import { getProgramme, getService } from "@/lib/data";
+import { getService, getProgramme } from "@/lib/data";
 import { stripe } from "@/lib/stripe";
 
 export async function POST(req) {
   const me = await requireUser();
   const body = await req.json().catch(() => ({}));
-  const { type } = body;
+  const { slug } = body;
 
   const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  const item = getService(slug) || getProgramme(slug);
+  if (!item) {
+    return NextResponse.json({ error: "Unknown item" }, { status: 400 });
+  }
 
   try {
     let session;
 
     // ─────────────────────────────────────────
-    // PROGRAMME PURCHASE
+    // ONE-OFF PAYMENT
     // ─────────────────────────────────────────
-    if (type === "programme") {
-      const programme = getProgramme(body.programme_slug);
-      if (!programme) {
-        return NextResponse.json(
-          { error: "Unknown programme" },
-          { status: 400 },
-        );
-      }
-
+    if (item.checkout === "oneoff") {
       session = await stripe.checkout.sessions.create({
         mode: "payment",
         payment_method_types: ["card"],
         line_items: [
           {
             price_data: {
-              currency: "gbp",
-              unit_amount: programme.pricePence,
+              currency: item.currency || "eur",
+              unit_amount: item.pricePence,
               product_data: {
-                name: programme.name,
-                description: programme.tagline,
+                name: item.name,
+                description: item.tagline,
               },
             },
             quantity: 1,
@@ -43,81 +40,48 @@ export async function POST(req) {
         ],
         customer_email: me.email,
         success_url: `${base}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${base}/checkout/${programme.slug}?canceled=1`,
+        cancel_url: `${base}/coaching/${item.slug}?canceled=1`,
         metadata: {
-          type: "programme",
+          type: "oneoff",
           userId: me.id,
-          programmeSlug: programme.slug,
+          itemSlug: item.slug,
+          deliveryType: item.deliveryType || "digital",
         },
       });
     }
 
     // ─────────────────────────────────────────
-    // COACHING SESSION BOOKING
+    // MONTHLY SUBSCRIPTION
     // ─────────────────────────────────────────
-    else if (type === "coaching") {
-      const service = getService(body.service_slug);
-      if (!service) {
-        return NextResponse.json(
-          { error: "Unknown session type" },
-          { status: 400 },
-        );
-      }
-
-      const pricePence = Math.round(
-        parseFloat(service.price.replace(/[^0-9.]/g, "")) * 100,
-      );
-
-      const bookingDate = String(body.booking_date || "")
-        .trim()
-        .slice(0, 20);
-      const bookingTime = String(body.booking_time || "")
-        .trim()
-        .slice(0, 10);
-      const playerNotes = String(body.player_notes || "")
-        .trim()
-        .slice(0, 500);
-
-      console.log("[checkout] coaching payload:", {
-        bookingDate,
-        bookingTime,
-        playerNotes,
-        serviceSlug: service.slug,
-      });
-
+    else if (item.checkout === "subscription") {
       session = await stripe.checkout.sessions.create({
-        mode: "payment",
+        mode: "subscription",
         payment_method_types: ["card"],
         line_items: [
           {
             price_data: {
-              currency: "gbp",
-              unit_amount: pricePence,
+              currency: item.currency || "eur",
+              unit_amount: item.pricePence,
+              recurring: { interval: item.interval || "month" },
               product_data: {
-                name: service.name,
-                description: `${service.tagline} · ${service.duration}`,
+                name: item.name,
+                description: item.tagline,
               },
             },
             quantity: 1,
           },
         ],
         customer_email: me.email,
-        success_url: `${base}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${base}/coaching/${service.slug}?canceled=1`,
+        success_url: `${base}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${base}/programmes/${item.slug}?canceled=1`,
         metadata: {
-          type: "coaching",
+          type: "subscription",
           userId: me.id,
-          serviceSlug: service.slug,
-          bookingDate,
-          bookingTime,
-          playerNotes,
+          itemSlug: item.slug,
         },
       });
     } else {
-      return NextResponse.json(
-        { error: "Invalid checkout type" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Unknown checkout type" }, { status: 400 });
     }
 
     return NextResponse.json({ url: session.url, sessionId: session.id });
@@ -125,7 +89,7 @@ export async function POST(req) {
     console.error("[stripe] checkout session failed:", err);
     return NextResponse.json(
       { error: "Could not start checkout. Please try again." },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
