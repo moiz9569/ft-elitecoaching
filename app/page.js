@@ -22,15 +22,33 @@ const stats = [
   { n: "4.9★", l: "Average rating" },
 ];
 
+const sessionSteps = [
+  {
+    img: "/finian-6.PNG",
+    n: "01",
+    t: "You show up",
+    d: "We start with a quick chat about your last match and what you want to work on today.",
+  },
+  {
+    img: "/finian-2.PNG",
+    n: "02",
+    t: "We work",
+    d: "Position-specific drills, filmed reps, and real pressure. No filler. Just work.",
+  },
+  {
+    img: "/finian-3.PNG",
+    n: "03",
+    t: "You leave with homework",
+    d: "Every session ends with 2–3 clear things to practise before we next meet.",
+  },
+];
+
 export default function Home() {
   return (
     <main>
       {/* HERO */}
       <section className="relative -mt-16 flex min-h-[calc(100svh_+_4rem)] flex-col overflow-hidden">
         <Image
-          // src="/hero.png"
-          // src="/hero.jpg"
-          // src="/WhatsApp Image 2026-09-28 at 1.56.02 AM.jpeg"
           src="/ChatGPT Image Sep 28, 2026, 09_12_21 PM-Picsart-AiImageEnhancer.png"
           alt="Footballer training under floodlights"
           fill
@@ -43,12 +61,12 @@ export default function Home() {
           <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary sm:text-sm sm:tracking-[0.25em]">
             Football coaching · Digital programmes
           </p>
-          <h1 className="mt-4 text-[#F4F7FB] max-w-4xl text-4xl leading-[0.95] sm:text-5xl md:text-7xl lg:text-8xl xl:text-[9rem]">
+          <h1 className="mt-4 max-w-4xl text-4xl leading-[0.95] text-[#F4F7FB] sm:text-5xl md:text-7xl lg:text-8xl xl:text-[9rem]">
             Train like
             <br />
             the <span className="text-primary">elite.</span>
           </h1>
-          <p className="mt-5 max-w-xl font-semibold text-base text-gray-300 sm:mt-6 sm:text-lg text-gray-100">
+          <p className="mt-5 max-w-xl text-base font-semibold text-gray-100 sm:mt-6 sm:text-lg">
             Personal coaching and proven training programmes that turn hard work
             into match-day results.
           </p>
@@ -90,69 +108,88 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PICK YOUR PATH */}
-      {/* PICK YOUR PATH */}
-<section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-  <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
-    Two ways to train
-  </p>
-  <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-    Pick your path
-  </h2>
-  <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2">
-    {[
-      {
-        img: "/IMG_8239.JPG",
-        t: "Personal coaching",
-        d: "Book a 1-to-1, small group or match analysis session with the coach.",
-        to: "/coaching",
-        cta: "See sessions",
-        from: `From ${services[1].price}`,
-      },
-      {
-        img: "/Copy of IMG_8212.JPG",
-        t: "Digital programmes",
-        d: "Structured video programmes you can follow anywhere, at your pace.",
-        to: "/programmes",
-        cta: "See programmes",
-        from: `From ${formatPrice(Math.min(...programmes.map((p) => p.pricePence)))}`,
-      },
-    ].map((c) => (
-      <Link
-        key={c.t}
-        href={c.to}
-        className="group relative flex min-h-[22rem] flex-col justify-end overflow-hidden border sm:min-h-[26rem]"
-      >
+      {/* THREE IMAGES */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+          On the pitch
+        </p>
+        <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+          Real work. Real progress.
+        </h2>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              img: "/finian-4.PNG",
+              t: "Position-specific drills",
+              d: "Every drill is built around where you actually play. Centre-back work is different from winger work.",
+            },
+            {
+              img: "/finian-8.PNG",
+              t: "Filmed reps",
+              d: "Key reps are filmed so you can see your own technique, not just hear about it.",
+            },
+            {
+              img: "/finian-10.PNG",
+              t: "Clear homework",
+              d: "You leave every session with 2–3 things to practise on your own before we next meet.",
+            },
+          ].map((c) => (
+            <div key={c.t}>
+              <div className="relative aspect-[4/5] w-full overflow-hidden border">
+                <Image
+                  src={c.img}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </div>
+              <h3 className="mt-5 text-2xl sm:text-3xl">{c.t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                {c.d}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FULL-WIDTH BANNER */}
+      <section className="relative flex min-h-[70vh] items-center overflow-hidden border-y">
         <Image
-          src={c.img}
+          src="/finian-1.PNG"
           alt=""
           fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="100vw"
+          className="object-cover"
         />
-
-        {/* Gradient overlay — dark at bottom fading to clear at top */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#00001A]/85 via-[#00001A]/35 to-[#00001A]/15" />
-
-        <div className="relative p-6 sm:p-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-primary">
-            {c.from}
-          </span>
-          <h3 className="mt-2 text-3xl sm:text-4xl text-[#F4F7FB] lg:text-5xl">
-            {c.t}
-          </h3>
-          <p className="mt-2 max-w-md text-sm text-gray-300 sm:text-base">
-            {c.d}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#00001A]/85 via-[#00001A]/60 to-[#00001A]/30" />
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+            Every rep counts
           </p>
-          <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary sm:text-base">
-            {c.cta}{" "}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </span>
+          <h2 className="mt-3 max-w-3xl text-4xl leading-[0.95] text-[#F4F7FB] sm:text-5xl md:text-6xl lg:text-7xl">
+            This is where players are made.
+          </h2>
+          <p className="mt-5 max-w-xl text-base text-gray-200 sm:text-lg">
+            No shortcuts. No filler. Just focused, position-specific work that
+            shows up on match day.
+          </p>
+          <div className="mt-8">
+            <Button
+              asChild
+              size="lg"
+              className="h-12 px-6 text-sm font-bold uppercase tracking-wider sm:text-base"
+            >
+              <Link href="/coaching">
+                Train with me <ArrowRight />
+              </Link>
+            </Button>
+          </div>
         </div>
-      </Link>
-    ))}
-  </div>
-</section>
+      </section>
+
+      
 
       {/* HOW IT WORKS */}
       <section className="pitch-lines border-y">
@@ -204,56 +241,209 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROGRAMMES */}
+      {/* PICK YOUR PATH */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Programmes
-          </h2>
-          <Link
-            href="/programmes"
-            className="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-primary md:inline lg:text-base"
-          >
-            View all →
-          </Link>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {programmes.map((p) => (
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+          Two ways to train
+        </p>
+        <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+          Pick your path
+        </h2>
+        <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2">
+          {[
+            {
+              img: "/finian-12.PNG",
+              t: "Personal coaching",
+              d: "Book a 1-to-1, small group or match analysis session with the coach.",
+              to: "/coaching",
+              cta: "See sessions",
+              from: `From ${services[1].price}`,
+            },
+            {
+              img: "/finian-13.PNG",
+              t: "Digital programmes",
+              d: "Structured video programmes you can follow anywhere, at your pace.",
+              to: "/programmes",
+              cta: "See programmes",
+              from: `From ${formatPrice(
+                Math.min(...programmes.map((p) => p.pricePence))
+              )}`,
+            },
+          ].map((c) => (
             <Link
-              key={p.slug}
-              href={`/programmes/${p.slug}`}
-              className="group flex flex-col border bg-card p-6 transition-colors hover:border-primary"
+              key={c.t}
+              href={c.to}
+              className="group relative flex min-h-[22rem] flex-col justify-end overflow-hidden border sm:min-h-[26rem]"
             >
-              <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                <span>{p.weeks} weeks</span>
-                <span>{p.level}</span>
-              </div>
-              <h3 className="mt-6 text-2xl sm:text-3xl lg:text-4xl">
-                {p.name}
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-                {p.tagline}
-              </p>
-              <ul className="mb-8 mt-6 space-y-2 text-sm">
-                {p.outcomes.slice(0, 3).map((o) => (
-                  <li key={o} className="flex gap-2">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                    {o}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t pt-4">
-                <span className="font-display text-3xl sm:text-4xl">
-                  {formatPrice(p.pricePence)}
+              <Image
+                src={c.img}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#00001A]/85 via-[#00001A]/35 to-[#00001A]/15" />
+              <div className="relative p-6 sm:p-8">
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                  {c.from}
                 </span>
-                <span className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline sm:text-base">
-                  Details →
+                <h3 className="mt-2 text-3xl text-[#F4F7FB] sm:text-4xl lg:text-5xl">
+                  {c.t}
+                </h3>
+                <p className="mt-2 max-w-md text-sm text-gray-300 sm:text-base">
+                  {c.d}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary sm:text-base">
+                  {c.cta}{" "}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </div>
             </Link>
           ))}
         </div>
       </section>
+
+      
+
+      {/* MEET THE COACH */}
+      {/* <section className="border-b bg-card">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 md:grid-cols-2 md:gap-16 lg:py-24">
+          <div className="relative aspect-[4/5] w-full overflow-hidden border">
+            <Image
+              src="/coach.jpg"
+              alt="The coach"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+              Meet the coach
+            </p>
+            <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl">
+              Hi, I&apos;m Finian.
+            </h2>
+            <div className="mt-6 space-y-4 text-base text-muted-foreground sm:text-lg">
+              <p>
+                I&apos;ve spent years coaching players at grassroots, academy
+                and semi-pro level. I know what separates the ones who make it
+                from the ones who don&apos;t — it&apos;s not talent. It&apos;s
+                the quality of the work.
+              </p>
+              <p>
+                Every session I run is built around you. Your position. Your
+                goals. Your weaknesses. No copy-paste drills. No wasted reps.
+              </p>
+              <p>
+                Whether you&apos;re 10 or 25, if you&apos;re serious about
+                getting better, I&apos;ll help you get there.
+              </p>
+            </div>
+            <div className="mt-8">
+              <Button
+                asChild
+                size="lg"
+                className="h-12 font-bold uppercase tracking-wider"
+              >
+                <Link href="/coaching">
+                  Train with me <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      {/* WHAT A SESSION LOOKS LIKE */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+          Inside a session
+        </p>
+        <h2 className="mt-3 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+          What actually happens
+        </h2>
+
+        <div className="mt-12 grid gap-8 md:grid-cols-3">
+          {sessionSteps.map((s) => (
+            <div key={s.n}>
+              <div className="relative aspect-[4/3] w-full overflow-hidden border">
+                <Image
+                  src={s.img}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="mt-5 flex gap-4">
+                <span className="font-display text-4xl leading-none text-primary">
+                  {s.n}
+                </span>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl">{s.t}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                    {s.d}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PROGRAMMES */}
+      {/* <section className="border-t bg-card">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+              Programmes
+            </h2>
+            <Link
+              href="/programmes"
+              className="hidden shrink-0 text-sm font-bold uppercase tracking-wider text-primary md:inline lg:text-base"
+            >
+              View all →
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {programmes.map((p) => (
+              <Link
+                key={p.slug}
+                href={`/programmes/${p.slug}`}
+                className="group flex flex-col border bg-background p-6 transition-colors hover:border-primary"
+              >
+                <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  <span>{p.weeks} weeks</span>
+                  <span>{p.level}</span>
+                </div>
+                <h3 className="mt-6 text-2xl sm:text-3xl lg:text-4xl">
+                  {p.name}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                  {p.tagline}
+                </p>
+                <ul className="mb-8 mt-6 space-y-2 text-sm">
+                  {p.outcomes.slice(0, 3).map((o) => (
+                    <li key={o} className="flex gap-2">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      {o}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t pt-4">
+                  <span className="font-display text-3xl sm:text-4xl">
+                    {formatPrice(p.pricePence)}
+                  </span>
+                  <span className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline sm:text-base">
+                    Details →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section> */}
 
       {/* TESTIMONIALS */}
       <TestimonialsSection

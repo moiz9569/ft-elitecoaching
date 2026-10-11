@@ -14,7 +14,7 @@ export default function About() {
       {/* Custom hero with background image */}
       <section className="relative isolate overflow-hidden border-b">
         <Image
-          src="/IMG_8035.JPG"
+          src="/finian-1.PNG"
           alt=""
           fill
           sizes="100vw"
@@ -39,11 +39,11 @@ export default function About() {
 
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 md:grid-cols-2">
         <img
-          src="/Copy of IMG_8173.JPG"
+          src="/finian-9.PNG"
           alt="The coach working with a player"
           loading="lazy"
-          width={1280}
-          height={960}
+          width={80}
+          height={60}
           className="aspect-[4/3] w-full border object-cover"
         />
         <div className="space-y-5 text-lg">

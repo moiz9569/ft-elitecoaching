@@ -42,7 +42,7 @@ export default async function ProgrammeDetail({ params }) {
           <p className="mt-4 text-xl text-muted-foreground">{p.tagline}</p>
 
           <img
-            src="/programme.jpg"
+            src="/finian-11.PNG"
             alt=""
             loading="lazy"
             width={1280}

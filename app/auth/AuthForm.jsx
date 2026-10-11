@@ -72,7 +72,7 @@ export default function AuthForm() {
   return (
     <main className="grid min-h-[calc(100vh-4rem)] md:grid-cols-2">
       <div className="relative hidden md:block">
-        <img src="/hero.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src="/finian-5.PNG" alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-12 left-12 right-12">
           <h2 className="text-7xl">Your training.<br /><span className="text-primary">One place.</span></h2>
