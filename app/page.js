@@ -24,19 +24,19 @@ const stats = [
 
 const sessionSteps = [
   {
-    img: "/finian-6.PNG",
+    img: "/finian-6.JPG",
     n: "01",
     t: "You show up",
     d: "We start with a quick chat about your last match and what you want to work on today.",
   },
   {
-    img: "/finian-2.PNG",
+    img: "/finian-2.JPG",
     n: "02",
     t: "We work",
     d: "Position-specific drills, filmed reps, and real pressure. No filler. Just work.",
   },
   {
-    img: "/finian-3.PNG",
+    img: "/finian-3.JPG",
     n: "03",
     t: "You leave with homework",
     d: "Every session ends with 2–3 clear things to practise before we next meet.",
@@ -120,17 +120,17 @@ export default function Home() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
             {
-              img: "/finian-4.PNG",
+              img: "/finian-4.JPG",
               t: "Position-specific drills",
               d: "Every drill is built around where you actually play. Centre-back work is different from winger work.",
             },
             {
-              img: "/finian-8.PNG",
+              img: "/finian-8.JPG",
               t: "Filmed reps",
               d: "Key reps are filmed so you can see your own technique, not just hear about it.",
             },
             {
-              img: "/finian-10.PNG",
+              img: "/finian-10.JPG",
               t: "Clear homework",
               d: "You leave every session with 2–3 things to practise on your own before we next meet.",
             },
@@ -157,7 +157,7 @@ export default function Home() {
       {/* FULL-WIDTH BANNER */}
       <section className="relative flex min-h-[70vh] items-center overflow-hidden border-y">
         <Image
-          src="/finian-1.PNG"
+          src="/finian-1.JPG"
           alt=""
           fill
           sizes="100vw"
@@ -252,7 +252,7 @@ export default function Home() {
         <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2">
           {[
             {
-              img: "/finian-12.PNG",
+              img: "/finian-12.JPG",
               t: "Personal coaching",
               d: "Book a 1-to-1, small group or match analysis session with the coach.",
               to: "/coaching",
@@ -260,7 +260,7 @@ export default function Home() {
               from: `From ${services[1].price}`,
             },
             {
-              img: "/finian-13.PNG",
+              img: "/finian-13.JPG",
               t: "Digital programmes",
               d: "Structured video programmes you can follow anywhere, at your pace.",
               to: "/programmes",
