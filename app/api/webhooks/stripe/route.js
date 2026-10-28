@@ -35,9 +35,6 @@ export async function POST(req) {
   const { purchases, subscriptions, users } = await collections();
 
   try {
-    // ─────────────────────────────────────────
-    // CHECKOUT COMPLETED
-    // ─────────────────────────────────────────
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const meta = session.metadata || {};
@@ -77,13 +74,10 @@ export async function POST(req) {
             status: "paid",
             createdAt: new Date(),
           });
+          console.log("✅ DB SAVED for oneoff:", item.slug);
         } catch (err) {
           if (err.code === 11000) {
-            console.warn(
-              "[stripe] duplicate purchase skipped:",
-              item.slug,
-              session.id
-            );
+            console.warn("[stripe] duplicate purchase skipped:", item.slug);
           } else {
             console.error("[stripe] oneoff insert failed:", err);
             return NextResponse.json({ error: "DB error" }, { status: 500 });
@@ -91,27 +85,33 @@ export async function POST(req) {
         }
 
         if (user?.email) {
-          if (item.deliveryType === "digital") {
-            sendOneOffDigitalEmail({
-              to: user.email,
-              name: user.name,
-              item,
-            }).catch((e) => console.error("[email] digital send failed:", e));
-          } else {
-            sendOneOffAsyncEmail({
-              to: user.email,
-              name: user.name,
-              item,
-            }).catch((e) => console.error("[email] async send failed:", e));
+          console.log("📧 Attempting to send email to:", user.email);
+          try {
+            if (item.deliveryType === "digital") {
+              await sendOneOffDigitalEmail({ to: user.email, name: user.name, item });
+            } else {
+              await sendOneOffAsyncEmail({ to: user.email, name: user.name, item });
+            }
+            console.log("✅ USER EMAIL SENT SUCCESSFULLY");
+          } catch (emailErr) {
+            console.error("❌ USER EMAIL FAILED:", emailErr.message);
           }
-          sendCoachNotification({
-            customerEmail: user.email,
-            customerName: user.name,
-            item,
-            amountPence: session.amount_total,
-            currency: session.currency || "eur",
-            ref: session.payment_intent || session.id,
-          }).catch((e) => console.error("[email] coach notify failed:", e));
+
+          try {
+            await sendCoachNotification({
+              customerEmail: user.email,
+              customerName: user.name,
+              item,
+              amountPence: session.amount_total,
+              currency: session.currency || "eur",
+              ref: session.payment_intent || session.id,
+            });
+            console.log("✅ COACH EMAIL SENT SUCCESSFULLY");
+          } catch (emailErr) {
+            console.error("❌ COACH EMAIL FAILED:", emailErr.message);
+          }
+        } else {
+          console.log("⚠️ No user email found in database for this user.");
         }
       }
 
@@ -146,20 +146,15 @@ export async function POST(req) {
             stripeSubscriptionId: session.subscription,
             stripeCustomerId: session.customer,
             status: stripeSub?.status || "active",
-            currentPeriodEnd: stripeSub
-              ? new Date(stripeSub.current_period_end * 1000)
-              : null,
+            currentPeriodEnd: stripeSub ? new Date(stripeSub.current_period_end * 1000) : null,
             amountPence: session.amount_total,
             currency: session.currency || "eur",
             createdAt: new Date(),
           });
+          console.log("✅ DB SAVED for subscription:", item.slug);
         } catch (err) {
           if (err.code === 11000) {
-            console.warn(
-              "[stripe] duplicate subscription skipped:",
-              item.slug,
-              session.subscription
-            );
+            console.warn("[stripe] duplicate subscription skipped:", item.slug);
           } else {
             console.error("[stripe] subscription insert failed:", err);
             return NextResponse.json({ error: "DB error" }, { status: 500 });
@@ -167,33 +162,36 @@ export async function POST(req) {
         }
 
         if (user?.email) {
-          sendSubscriptionWelcomeEmail({
-            to: user.email,
-            name: user.name,
-            item,
-          }).catch((e) => console.error("[email] sub welcome failed:", e));
-          sendCoachNotification({
-            customerEmail: user.email,
-            customerName: user.name,
-            item,
-            amountPence: session.amount_total,
-            currency: session.currency || "eur",
-            ref: session.subscription,
-          }).catch((e) => console.error("[email] coach notify failed:", e));
+          console.log("📧 Attempting to send SUB email to:", user.email);
+          try {
+            await sendSubscriptionWelcomeEmail({ to: user.email, name: user.name, item });
+            console.log("✅ USER SUB EMAIL SENT");
+          } catch (emailErr) {
+            console.error("❌ USER SUB EMAIL FAILED:", emailErr.message);
+          }
+
+          try {
+            await sendCoachNotification({
+              customerEmail: user.email,
+              customerName: user.name,
+              item,
+              amountPence: session.amount_total,
+              currency: session.currency || "eur",
+              ref: session.subscription,
+            });
+            console.log("✅ COACH SUB EMAIL SENT");
+          } catch (emailErr) {
+            console.error("❌ COACH SUB EMAIL FAILED:", emailErr.message);
+          }
         }
       }
     }
 
-    // ─────────────────────────────────────────
-    // INVOICE PAID (renewal)
-    // ─────────────────────────────────────────
     if (event.type === "invoice.paid") {
       const invoice = event.data.object;
       if (invoice.subscription) {
         try {
-          const stripeSub = await stripe.subscriptions.retrieve(
-            invoice.subscription
-          );
+          const stripeSub = await stripe.subscriptions.retrieve(invoice.subscription);
           await subscriptions.updateOne(
             { stripeSubscriptionId: invoice.subscription },
             {
@@ -210,9 +208,6 @@ export async function POST(req) {
       }
     }
 
-    // ─────────────────────────────────────────
-    // SUBSCRIPTION CANCELLED
-    // ─────────────────────────────────────────
     if (event.type === "customer.subscription.deleted") {
       const sub = event.data.object;
       try {
@@ -225,9 +220,6 @@ export async function POST(req) {
       }
     }
 
-    // ─────────────────────────────────────────
-    // PAYMENT FAILED
-    // ─────────────────────────────────────────
     if (event.type === "invoice.payment_failed") {
       const invoice = event.data.object;
       if (invoice.subscription) {
