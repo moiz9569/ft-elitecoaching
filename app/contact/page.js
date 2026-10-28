@@ -51,7 +51,7 @@ export default function Contact() {
       {/* HERO */}
       <section className="relative overflow-hidden border-b">
         <Image
-          src="/finian-14.PNG"
+          src="/finian-14.JPG"
           alt=""
           fill
           priority

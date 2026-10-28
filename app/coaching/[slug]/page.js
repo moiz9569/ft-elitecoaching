@@ -51,7 +51,7 @@ export default async function ServiceDetail({ params }) {
 
         <div className="space-y-6">
           <img
-            src="/finian-11.PNG"
+            src="/finian-13.JPG"
             alt=""
             loading="lazy"
             width={1280}

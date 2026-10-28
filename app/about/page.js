@@ -14,7 +14,7 @@ export default function About() {
       {/* Custom hero with background image */}
       <section className="relative isolate overflow-hidden border-b">
         <Image
-          src="/finian-1.PNG"
+          src="/IMG_8035.JPG"
           alt=""
           fill
           sizes="100vw"
