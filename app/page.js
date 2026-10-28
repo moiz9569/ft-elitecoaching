@@ -120,7 +120,7 @@ export default function Home() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
             {
-              img: "/finian-4.JPG",
+              img: "/finian-10.JPG",
               t: "Position-specific drills",
               d: "Every drill is built around where you actually play. Centre-back work is different from winger work.",
             },
@@ -130,7 +130,7 @@ export default function Home() {
               d: "Key reps are filmed so you can see your own technique, not just hear about it.",
             },
             {
-              img: "/finian-10.JPG",
+              img: "/finian-4.JPG",
               t: "Clear homework",
               d: "You leave every session with 2–3 things to practise on your own before we next meet.",
             },
